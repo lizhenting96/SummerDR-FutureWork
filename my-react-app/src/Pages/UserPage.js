@@ -15,6 +15,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import MenuIcon from "@material-ui/icons/Menu";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { mainListItems } from "../Components/listItems";
 import MainTable from '../Components/MainTable';
@@ -22,7 +24,8 @@ import Terminal from '../Components/ReactTerminal';
 import Welcome from '../Components/Welcome';
 import Paper from '@material-ui/core/Paper';
 import { Avatar } from "@material-ui/core";
-import iconPic from "../Static/logo.jpg"
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import iconPic from "../Static/logo.jpg";
 
 // style
 const drawerWidth = 240;
@@ -119,14 +122,26 @@ const useStyles = makeStyles(theme => ({
    },
    fixedHeight: {
       height: 120
-   }
+   },
+   sectionDesktop: {
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+         display: 'flex',
+      },
+   },
+   sectionMobile: {
+      display: 'flex',
+      [theme.breakpoints.up('md')]: {
+         display: 'none',
+      },
+   },
 }));
 
 // small components for MainPage
-const HomeHeader = () => (
+const WelcomeHeader = () => (
    <Typography
       component="h1"
-      variant="h4"
+      variant="h6"
       color="inherit"
       noWrap
       className={useStyles().title}
@@ -164,12 +179,41 @@ const TerminalHeader = () => (
 export default function MainPage() {
    const classes = useStyles();
    const [open, setOpen] = React.useState(true);
+   const [userMoreAnchorEl, setUserMoreAnchorEl] = React.useState(null);
+
+   const isUserMenuOpen = Boolean(userMoreAnchorEl);
+
+   const handleUserMenuClose = () => {
+      setUserMoreAnchorEl(null);
+   };
+   const handleUserMenuOpen = (event) => {
+      setUserMoreAnchorEl(event.currentTarget);
+   };
+
    const handleDrawerOpen = () => {
       setOpen(true);
    };
    const handleDrawerClose = () => {
       setOpen(false);
    };
+
+   const userMenuId = 'user-menu-mobile';
+   const renderUserMenu = (
+      <Menu
+         anchorEl={userMoreAnchorEl}
+         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+         getContentAnchorEl={null}
+         id={userMenuId}
+         keepMounted
+         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+         open={isUserMenuOpen}
+         onClose={handleUserMenuClose}
+      >
+         <MenuItem>Profile</MenuItem>
+         <MenuItem>Settings</MenuItem>
+         <MenuItem>Log out</MenuItem>
+      </Menu>
+   );
    return (
 
       <Router>
@@ -192,16 +236,26 @@ export default function MainPage() {
                   >
                      <MenuIcon />
                   </IconButton>
-                  <Avatar src={iconPic} className={classes.avatar} />
+                  <Avatar src={iconPic} />
                   <Switch>
-                     <Route exact path='/' component={HomeHeader} />
-                     <Route exact path='/table' component={TableHeader} />
-                     <Route exact path='/terminal' component={TerminalHeader} />
+                     <Route exact path='/users' component={WelcomeHeader} />
+                     <Route exact path='/users/table' component={TableHeader} />
+                     <Route exact path='/users/terminal' component={TerminalHeader} />
                   </Switch>
-                  <Button className={classes.loginButton} href='/users/login'>Log In</Button>
-                  <Button className={classes.loginButton} href='/users/signup'>Sign up</Button>
+                  <div className={classes.sectionDesktop}>
+                     Hi, Username
+                  </div>
+                  <IconButton
+                     className={classes.menuButton}
+                     color="inherit"
+                     aria-label="user profile"
+                     onClick={handleUserMenuOpen}
+                  >
+                     <AccountCircle />
+                  </IconButton>
                </Toolbar>
             </AppBar>
+            {renderUserMenu}
             <Drawer
                variant="permanent"
                classes={{
@@ -224,10 +278,10 @@ export default function MainPage() {
                   <Grid container spacing={3}>
                      <Grid item xs={12}>
                         <Switch>
-                           <Route exact path='/' component={Welcome} />
+                           <Route exact path='/users' component={Welcome} />
                            <Paper>
-                              <Route exact path='/table' component={MainTable} />
-                              <Route exact path='/terminal' component={Terminal} />
+                              <Route exact path='/users/table' component={MainTable} />
+                              <Route exact path='/users/terminal' component={Terminal} />
                            </Paper>
                         </Switch>
                      </Grid>

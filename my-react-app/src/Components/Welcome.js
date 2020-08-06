@@ -45,13 +45,13 @@ const tiers = [
       title: 'Table',
       description: 'An interactive table connecting to a postgreSQL database, SummerDR. You can choose a table in the database. You can also sort it or filter it by column. This function is based on DevExtreme Reactive',
       buttonText: 'start',
-      buttonHref: '/table'
+      buttonHref: '/users/table'
    },
    {
       title: 'Terminal',
       description: 'A terminal with a fake file system. Basic linux command is intergrated inside this terminal. You can manipulate this file system with these commands. BUT once you refresh the page, all things will be gone because it is not connected to a database yet!',
       buttonText: 'start',
-      buttonHref: '/terminal'
+      buttonHref: '/users/terminal'
    },
    {
       title: 'More functions',

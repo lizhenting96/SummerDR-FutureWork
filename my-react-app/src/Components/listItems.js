@@ -10,19 +10,19 @@ import { NavLink } from 'react-router-dom';
 
 export const mainListItems = (
   <div>
-    <ListItem button component={ NavLink } exact to="/" activeStyle={{background: "#c4c4c47f"}}>
+    <ListItem button component={ NavLink } exact to="/users" activeStyle={{background: "#c4c4c47f"}}>
       <ListItemIcon>
         <HomeIcon />
       </ListItemIcon>
       <ListItemText primary="Welcome" />
     </ListItem>
-    <ListItem button component={ NavLink } exact to="/table" activeStyle={{background: "#c4c4c47f"}}>
+    <ListItem button component={ NavLink } exact to="/users/table" activeStyle={{background: "#c4c4c47f"}}>
       <ListItemIcon>
         <SearchIcon />
       </ListItemIcon>
       <ListItemText primary="Table" />
     </ListItem>
-    <ListItem button component={ NavLink } exact to='/terminal' activeStyle={{background: "#c4c4c47f"}}>
+    <ListItem button component={ NavLink } exact to='/users/terminal' activeStyle={{background: "#c4c4c47f"}}>
       <ListItemIcon>
         <CodeIcon />
       </ListItemIcon>
