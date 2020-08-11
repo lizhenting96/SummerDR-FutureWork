@@ -56,7 +56,7 @@ Users need to log in to visit the following three webpages:
 http://localhost:3000/users is the welcome page for users who have already logged in  
 http://localhost:3000/users/table is the page for logged-in users to search in the database  
 http://localhost:3000/users/terminal is the terminal page for logged-in users  
-## Know limitaions and future work
+## Known limitaions and future work
 1. Log-in page and sign-up page are not connected to any database, even though there are simple form validation 
 on these two pages. So, users cannot log in or sign up and then access the welcome page currently.  
 2. The only way to access welcome page now is type http://localhost:3000/users in address bar.  
