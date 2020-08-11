@@ -1,254 +1,87 @@
 import React from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
-import MenuItem from '@material-ui/core/MenuItem';
-import InputBase from '@material-ui/core/InputBase';
-import { Avatar } from "@material-ui/core";
-import iconPic from "../Static/logo.jpg"
-import { NavLink } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import NavBar from "../Components/HomePageNavBar";
+import MainHeader from "../Components/HomePageMainHeader";
+import FeatureCard from "../Components/HomePageFeatureCard";
+import NavCard from "../Components/HomePageNavCard";
+import Footer from "../Components/HomePageFooter";
+import { Container } from "@material-ui/core";
 
 const useSytles = makeStyles(theme => ({
    root: {
       display: "flex"
    },
-   grow: {
-      flexGrow: 1,
-   },
-   appBar: {
-      backgroundColor: "#900",
-      position: 'absolute',
-   },
-   toolbar: {
-      paddingRight: 24,
-      paddingLeft:24
-   },
-   avatar: {
-      marginRight: theme.spacing(4),
-      marginLeft: theme.spacing(4),
-   },
-   loginButton: {
-      backgroundColor: "white",
-      color: "#900",
-      fontSize: "1rem",
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      padding: '3px 15px',
-      marginLeft: "5px",
-      marginRight: "5px",
-      textTransform: "none",
-      '&:hover': {
-         backgroundColor: "#E2E2E2",
-         color: "#900",
-      }
-   },
-   navButton: {
-      backgroundColor: "#900",
-      color: "white",
-      fontSize: "1rem",
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      paddingLeft: "15px",
-      paddingRight: "15px",
-      marginLeft: "2px",
-      marginRight: "2px",
-      textTransform: "none",
-      '&:hover': {
-         backgroundColor: "white",
-         color: "#900",
-      },
-   },
-   search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-         backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-         marginLeft: theme.spacing(3),
-         width: 'auto',
-      },
-   },
-   searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-   },
-   menuButton: {
-      marginRight: theme.spacing(2),
-   },
-   inputRoot: {
-      color: 'inherit',
-   },
-   inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-         width: '20ch',
-      },
-   },
-   sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-         display: 'flex',
-      },
-   },
-   sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-         display: 'none',
-      },
-   },
+   appBarSpacer: theme.mixins.toolbar,
 }));
+
+const mainHeaderContent = {
+   title: 'A simple home page',
+   description:
+      "This is a simple home page. Write some description here. Background images are images from https://source.unsplash.com",
+   image: 'https://source.unsplash.com/WLUHO9A_xik',
+   imgText: 'main image description',
+};
+
+const featureCardContents = [
+   {
+      title: 'News Title 1',
+      date: 'Nov 1',
+      description:
+         '',
+      image: 'https://source.unsplash.com/EJ4qfFp1g8Q',
+      imageText: 'Image Text',
+   },
+   {
+      title: 'News Title 2',
+      date: 'Nov 2',
+      description:
+         'This is a wider card with where you can put some news and link in it. This is a wider card with where you can put some news and link in it. This is a wider card with where you can put some news and link in it.This is a wider card with where you can put some news and link in it.This is a wider card with where you can put some news and link in it.',
+      image: 'https://source.unsplash.com/jFCViYFYcus',
+      imageText: 'Image Text',
+   },
+   {
+      title: 'News Title 3',
+      date: 'Nov 3',
+      description:
+         'This is a wider card with where you can put some news and link in it.',
+      image: 'https://source.unsplash.com/hFzIoD0F_i8',
+      imageText: 'Image Text',
+   },
+];
+
+const navCardPic = {
+   title: 'Nav Card',
+   image: 'https://source.unsplash.com/vUNQaTtZeOo',
+}
 
 export default function HomePage() {
    const classes = useSytles();
-
-   const [userMoreAnchorEl, setUserMoreAnchorEl] = React.useState(null);
-   const [navMoreAnchorEl, setNavMoreAnchorEl] = React.useState(null);
-
-   const isUserMenuOpen = Boolean(userMoreAnchorEl);
-   const isNavMenuOpen = Boolean(navMoreAnchorEl)
-
-   const handleUserMenuClose = () => {
-      setUserMoreAnchorEl(null);
-   };
-   const handleUserMenuOpen = (event) => {
-      setUserMoreAnchorEl(event.currentTarget);
-   };
-
-   const handleNavMenuClose = () => {
-      setNavMoreAnchorEl(null);
-   };
-   const handleNavMenuOpen = (event) => {
-      setNavMoreAnchorEl(event.currentTarget);
-   };
-
-   const userMenuId = 'user-menu-mobile';
-   const renderUserMenu = (
-      <Menu
-         anchorEl={userMoreAnchorEl}
-         getContentAnchorEl={null}
-         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-         id={userMenuId}
-         keepMounted
-         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-         open={isUserMenuOpen}
-         onClose={handleUserMenuClose}
-      >
-         <MenuItem component={NavLink} exact to='/users/login'>
-            Login
-         </MenuItem>
-         <MenuItem component={NavLink} exact to='/users/signup'>
-            Sign up
-         </MenuItem>
-      </Menu>
-   );
-
-   const navMenuId = 'nav-menu-mobile';
-   const renderNavMenu = (
-      <Menu
-         anchorEl={navMoreAnchorEl}
-         getContentAnchorEl={null}
-         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-         id={navMenuId}
-         keepMounted
-         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-         open={isNavMenuOpen}
-         onClose={handleNavMenuClose}
-      >
-         <MenuItem component={NavLink} exact to='#'>
-            Code
-         </MenuItem>
-         <MenuItem component={NavLink} exact to='#'>
-            Developers
-         </MenuItem>
-         <MenuItem component={NavLink} exact to='#'>
-            Contact
-         </MenuItem>
-      </Menu>
-   );
    return (
-      <div className={classes.root}>
-         <CssBaseline />
-         <AppBar className={classes.appBar}>
+      <React.Fragment>
+         <div className={classes.root}>
+            <CssBaseline />
             <Container maxWidth='lg'>
-               <Toolbar className={classes.toolbar}>
-                  <Avatar src={iconPic} className={classes.avatar} />
-                  {/* navButtons for large screen */}
-                  <div className={classes.sectionDesktop}>
-                     <Button className={classes.navButton} href='#'>Code</Button>
-                     <Button className={classes.navButton} href='#'>Developers</Button>
-                     <Button className={classes.navButton} href='#'>Contact</Button>
-                  </div>
-                  {/* navButtons for small screen */}
-                  <div className={classes.sectionMobile}>
-                     <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleNavMenuOpen}
-                     >
-                        <MenuIcon />
-                     </IconButton>
-                  </div>
-
-                  <div className={classes.grow}></div>
-
-                  <div className={classes.search}>
-                     <div className={classes.searchIcon}>
-                        <SearchIcon />
-                     </div>
-                     <InputBase
-                        placeholder="Search…"
-                        classes={{
-                           root: classes.inputRoot,
-                           input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
-                     />
-                  </div>
-                  {/* log-in and sign-up buttons for large screen */}
-                  <div className={classes.sectionDesktop}>
-                     <Button className={classes.loginButton} href='/users/login'>Log In</Button>
-                     <Button className={classes.loginButton} href='/users/signup'>Sign up</Button>
-                  </div>
-                  {/* log-in and sign-up buttons for small screen */}
-                  <div className={classes.sectionMobile}>
-                     <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="login button"
-                        onClick={handleUserMenuOpen}
-                     >
-                        <AccountCircle />
-                     </IconButton>
-                  </div>
-
-               </Toolbar>
+               <NavBar />
+               <div className={classes.appBarSpacer} />
+               <main>
+                  <MainHeader post={mainHeaderContent} />
+                  <Grid container spacing={4}>
+                     {featureCardContents.map((post) => (
+                        <Grid key={post.title} item xs={12} md={3}>
+                           <FeatureCard  post={post} />
+                        </Grid>
+                     ))}
+                     <Grid item xs={12} md={3}>
+                        <NavCard key='NavCard' pic={navCardPic}/>
+                     </Grid>
+                  </Grid>
+               </main>
             </Container>
-         </AppBar>
-         {renderUserMenu}
-         {renderNavMenu}
-      </div>
+
+         </div>
+         <Footer />
+      </React.Fragment>
    )
 }

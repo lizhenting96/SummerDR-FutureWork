@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -85,15 +85,15 @@ export default function SignUp() {
   const classes = useStyles();
 
   // states
-  const [fName, setFName] = useState({inputVal: '', hasErr: false, errMsg: ''})
-  const [lName, setLName] = useState({inputVal: '', hasErr: false, errMsg: ''})
-  const [email, setEmail] = useState({inputVal: '', hasErr: false, errMsg: ''})
-  const [password, setPassword] = useState({inputVal: '', hasErr: false, errMsg: ''})
-  const [repassword, setRePassword] = useState({inputVal: '', hasErr: false, errMsg: ''})
+  const [fName, setFName] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [lName, setLName] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [email, setEmail] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [password, setPassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [repassword, setRePassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
 
   // handle states changes & form validation
   const handleFNameChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setFName((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -107,7 +107,7 @@ export default function SignUp() {
     }
   }
   const handleLNameChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setLName((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -121,7 +121,7 @@ export default function SignUp() {
     }
   }
   const handleEmailChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setEmail((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -149,7 +149,7 @@ export default function SignUp() {
     }
   }
   const handlePasswordChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setPassword((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -177,7 +177,7 @@ export default function SignUp() {
     }
   }
   const handleRePasswordChange = (e) => {
-    const {value} = e.target;
+    const { value } = e.target;
     setRePassword((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -210,7 +210,10 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar src={iconPic} className={classes.avatar} />
+        <a href='/'>
+          <Avatar src={iconPic} className={classes.avatar} />
+        </a>
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>

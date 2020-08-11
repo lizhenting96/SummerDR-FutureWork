@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -86,12 +86,12 @@ export default function SignIn() {
   const classes = useStyles();
 
   // states
-  const [email, setEmail] = useState({inputVal: '', hasErr: false, errMsg: ''})
-  const [password, setPassword] = useState({inputVal:'', hasErr: false, errMsg: ''})
+  const [email, setEmail] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [password, setPassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
 
   // handle states changes & form validation
   const handleEmailChange = (event) => {
-    const {value} = event.target;
+    const { value } = event.target;
     setEmail((prevState) => ({
       ...prevState,
       inputVal: value,
@@ -119,12 +119,12 @@ export default function SignIn() {
     }
   }
   const handlePasswordChange = (event) => {
-    const {value} = event.target;
+    const { value } = event.target;
     setPassword((prevState) => ({
       ...prevState,
       inputVal: value,
     }))
-    if (value ==='') {
+    if (value === '') {
       setPassword((prevState) => ({
         ...prevState,
         hasErr: true,
@@ -136,10 +136,13 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar src={iconPic} className={classes.avatar} />
+        <a href='/'>
+          <Avatar src={iconPic} className={classes.avatar} />
+        </a>
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
+        
         <form className={classes.form}>
           <Grid container spacing={0}>
             <Grid item xs={12} sm={12}>
