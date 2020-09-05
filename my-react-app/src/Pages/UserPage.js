@@ -25,6 +25,7 @@ import Paper from '@material-ui/core/Paper';
 import { Avatar } from "@material-ui/core";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import iconPic from "../Static/logo.jpg";
+import { Redirect } from 'react-router-dom';
 
 // style
 const drawerWidth = 240;
@@ -173,12 +174,21 @@ const TerminalHeader = () => (
    </Typography>
 )
 
-
+function FuncRedirect(props) {
+   const readyRedirect = props.readyRedirect;
+   const to = props.to
+   if (readyRedirect) {
+      alert("You've been successfully logged out!")
+      return <Redirect exact to={to} />
+   }
+   return null
+}
 
 export default function MainPage() {
    const classes = useStyles();
    const [open, setOpen] = React.useState(true);
    const [userMoreAnchorEl, setUserMoreAnchorEl] = React.useState(null);
+   const [logout, setLogOut] = React.useState(false)
 
    const isUserMenuOpen = Boolean(userMoreAnchorEl);
 
@@ -195,6 +205,22 @@ export default function MainPage() {
    const handleDrawerClose = () => {
       setOpen(false);
    };
+   const handleLogOut = (event) => {
+      event.preventDefault();
+      fetch('http://localhost:5000/log-out')
+      .then(res => {
+         res.json().then(data => {
+            if (data.successLogOut) {
+               setUserMoreAnchorEl(null);
+               setLogOut(true);
+            }
+         })
+      })
+      .catch(err => {
+         console.error(err);
+         alert('Error logging out please try again');
+      });
+   }
 
    const userMenuId = 'user-menu-mobile';
    const renderUserMenu = (
@@ -210,84 +236,86 @@ export default function MainPage() {
       >
          <MenuItem>Profile</MenuItem>
          <MenuItem>Settings</MenuItem>
-         <MenuItem>Log out</MenuItem>
+         <MenuItem onClick={handleLogOut}>Log out</MenuItem>
       </Menu>
    );
    return (
-
-      <Router>
-         <div className={classes.root}>
-            <CssBaseline />
-            <AppBar
-               position="absolute"
-               className={clsx(classes.appBar, open && classes.appBarShift)}
-            >
-               <Toolbar className={classes.toolbar}>
-                  <IconButton
-                     edge="start"
-                     color="inherit"
-                     aria-label="open drawer"
-                     onClick={handleDrawerOpen}
-                     className={clsx(
-                        classes.menuButton,
-                        open && classes.menuButtonHidden
-                     )}
-                  >
-                     <MenuIcon />
-                  </IconButton>
-                  <Avatar src={iconPic} />
-                  <Switch>
-                     <Route exact path='/users' component={WelcomeHeader} />
-                     <Route exact path='/users/table' component={TableHeader} />
-                     <Route exact path='/users/terminal' component={TerminalHeader} />
-                  </Switch>
-                  <div className={classes.sectionDesktop}>
-                     Hi, Username
+      <React.Fragment>
+         <Router>
+            <div className={classes.root}>
+               <CssBaseline />
+               <AppBar
+                  position="absolute"
+                  className={clsx(classes.appBar, open && classes.appBarShift)}
+               >
+                  <Toolbar className={classes.toolbar}>
+                     <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        className={clsx(
+                           classes.menuButton,
+                           open && classes.menuButtonHidden
+                        )}
+                     >
+                        <MenuIcon />
+                     </IconButton>
+                     <Avatar src={iconPic} />
+                     <Switch>
+                        <Route exact path='/users' component={WelcomeHeader} />
+                        <Route exact path='/users/table' component={TableHeader} />
+                        <Route exact path='/users/terminal' component={TerminalHeader} />
+                     </Switch>
+                     <div className={classes.sectionDesktop}>
+                        Hi, Username
                   </div>
-                  <IconButton
-                     className={classes.menuButton}
-                     color="inherit"
-                     aria-label="user profile"
-                     onClick={handleUserMenuOpen}
-                  >
-                     <AccountCircle />
-                  </IconButton>
-               </Toolbar>
-            </AppBar>
-            {renderUserMenu}
-            <Drawer
-               variant="permanent"
-               classes={{
-                  paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-               }}
-               open={open}
-            >
-               <div className={classes.toolbarIcon}>
-                  <IconButton onClick={handleDrawerClose}>
-                     <ChevronLeftIcon />
-                  </IconButton>
-               </div>
-               <Divider />
-               <List>{mainListItems}</List>
-               <Divider />
-            </Drawer>
-            <main className={classes.content}>
-               <div className={classes.appBarSpacer} />
-               <Container maxWidth="lg" className={classes.container}>
-                  <Grid container spacing={3}>
-                     <Grid item xs={12}>
-                        <Switch>
-                           <Route exact path='/users' component={Welcome} />
-                           <Paper>
-                              <Route exact path='/users/table' component={MainTable} />
-                              <Route exact path='/users/terminal' component={Terminal} />
-                           </Paper>
-                        </Switch>
+                     <IconButton
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="user profile"
+                        onClick={handleUserMenuOpen}
+                     >
+                        <AccountCircle />
+                     </IconButton>
+                  </Toolbar>
+               </AppBar>
+               {renderUserMenu}
+               <Drawer
+                  variant="permanent"
+                  classes={{
+                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
+                  }}
+                  open={open}
+               >
+                  <div className={classes.toolbarIcon}>
+                     <IconButton onClick={handleDrawerClose}>
+                        <ChevronLeftIcon />
+                     </IconButton>
+                  </div>
+                  <Divider />
+                  <List>{mainListItems}</List>
+                  <Divider />
+               </Drawer>
+               <main className={classes.content}>
+                  <div className={classes.appBarSpacer} />
+                  <Container maxWidth="lg" className={classes.container}>
+                     <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                           <Switch>
+                              <Route exact path='/users' component={Welcome} />
+                              <Paper>
+                                 <Route exact path='/users/table' component={MainTable} />
+                                 <Route exact path='/users/terminal' component={Terminal} />
+                              </Paper>
+                           </Switch>
+                        </Grid>
                      </Grid>
-                  </Grid>
-               </Container>
-            </main>
-         </div>
-      </Router>
+                  </Container>
+               </main>
+            </div>
+         </Router>
+         <FuncRedirect to='/users/login' readyRedirect={logout}></FuncRedirect>
+      </React.Fragment>
    );
 }

@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import iconPic from "../Static/logo.jpg"
+import { Redirect } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -80,7 +81,15 @@ const useStyles = makeStyles((theme) => ({
     color: "#900"
   },
 }));
-
+function FuncRedirect(props) {
+  const readyRedirect = props.readyRedirect;
+  const to = props.to
+  if (readyRedirect) {
+    alert("You've been successfully registered!")
+    return <Redirect exact to={to} />
+  }
+  return null
+}
 export default function SignUp() {
   const classes = useStyles();
 
@@ -90,6 +99,7 @@ export default function SignUp() {
   const [email, setEmail] = useState({ inputVal: '', hasErr: false, errMsg: '' })
   const [password, setPassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
   const [repassword, setRePassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [redirect, setRedirect] = useState(false)
 
   // handle states changes & form validation
   const handleFNameChange = (e) => {
@@ -206,6 +216,53 @@ export default function SignUp() {
   }
 
   // compare two password on submit
+  const onSubmit = (event) => {
+    event.preventDefault();
+    fetch('http://localhost:5000/sign-up', {
+      method: 'POST',
+      body: JSON.stringify({
+        firstName: fName.inputVal, 
+        lastName: lName.inputVal, 
+        email: email.inputVal, 
+        password: password.inputVal, 
+        password2: repassword.inputVal}),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => {
+      res.json().then(data => {
+        if (typeof data.email != 'undefined') {
+          setEmail((prevState) => ({
+            ...prevState,
+            hasErr: true,
+            errMsg: data.email
+          }))
+        }
+        if (typeof data.password2 != 'undefined') {
+          setRePassword((prevState) => ({
+            ...prevState,
+            hasErr: true,
+            errMsg: data.password2
+          }))
+        }
+        if (typeof data.password != 'undefined') {
+          setPassword((prevState) => ({
+            ...prevState,
+            hasErr: true,
+            errMsg: data.password
+          }))
+        }
+        if (data.success === true) {
+          setRedirect(true);
+        }
+      })
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error logging in please try again');
+    });
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -213,11 +270,10 @@ export default function SignUp() {
         <a href='/'>
           <Avatar src={iconPic} className={classes.avatar} />
         </a>
-
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onSubmit}>
           <Grid container spacing={0}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -284,11 +340,11 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                name="re-enter-password"
+                name="password2"
                 label="Re-enter Password"
                 type="password"
-                id="re-enter-password"
-                autoComplete="re-enter-password"
+                id="password2"
+                autoComplete="password2"
                 value={repassword.inputVal}
                 helperText={repassword.hasErr ? repassword.errMsg : " "}
                 onChange={handleRePasswordChange}
@@ -322,6 +378,7 @@ export default function SignUp() {
       <Box mt={2}>
         <Copyright />
       </Box>
+      <FuncRedirect to='/users/login' readyRedirect={redirect}></FuncRedirect>
     </Container>
   );
 }

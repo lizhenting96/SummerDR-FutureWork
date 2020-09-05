@@ -11,7 +11,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import iconPic from "../Static/logo.jpg"
+import iconPic from "../Static/logo.jpg";
+import { Redirect } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -82,12 +83,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function FuncRedirect(props) {
+  const readyRedirect = props.readyRedirect;
+  const to = props.to
+  if (readyRedirect) {
+    return <Redirect exact to={to} />
+  }
+  return null
+}
+
 export default function SignIn() {
   const classes = useStyles();
 
   // states
   const [email, setEmail] = useState({ inputVal: '', hasErr: false, errMsg: '' })
   const [password, setPassword] = useState({ inputVal: '', hasErr: false, errMsg: '' })
+  const [redirect, setRedirect] = useState(false)
 
   // handle states changes & form validation
   const handleEmailChange = (event) => {
@@ -132,6 +143,36 @@ export default function SignIn() {
       }))
     }
   }
+  const onSubmit = (event) => {
+    event.preventDefault();
+    fetch('http://localhost:5000/log-in', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email.inputVal, 
+        password: password.inputVal, 
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        setRedirect(true);
+      }
+      else if (response.status === 401) {
+        setPassword((prevState) => ({
+          ...prevState,
+          hasErr: true,
+          errMsg: "Email and password don't match"
+        }))
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error logging in please try again');
+    });
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -143,7 +184,7 @@ export default function SignIn() {
           Log in
         </Typography>
         
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onSubmit}>
           <Grid container spacing={0}>
             <Grid item xs={12} sm={12}>
               <CssTextField
@@ -208,6 +249,7 @@ export default function SignIn() {
       <Box mt={8}>
         <Copyright />
       </Box>
+      <FuncRedirect to='/users' readyRedirect={redirect}></FuncRedirect>
     </Container>
   );
 }
